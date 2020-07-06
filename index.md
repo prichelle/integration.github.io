@@ -3,7 +3,7 @@ layout: default
 title: Introduction
 ---
 
-#Integration information
+# Integration information
 
 ## CP4I
 ## APIC
