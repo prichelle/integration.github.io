@@ -1,3 +1,12 @@
 theme: jekyll-theme-hacker
 title: IBM Cloud Integration Software information corner
 description: provides information on IBM software
+owner:
+  name: Pierre Richelle
+  bio: "TechSales at IBM"
+  email: pierre.richelle@be.ibm.com
+permalink:   /:categories/:title/
+markdown:    kramdown
+plugins:
+  - jekyll-sitemap
+  - jekyll-seo-tag
