@@ -11,8 +11,8 @@ title: Introduction
 ### Designer
 ### Software
 
-#Posts update
+# Posts update
 
 {% for post in site.posts %}
-{{ post.date | date_to_string }} [TEST]({{ post.url }}) {{ post.title }}
+{{ post.date | date_to_string }} [{{ post.title }}]({{ post.url }}) 
 {% endfor %}
