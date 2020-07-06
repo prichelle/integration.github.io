@@ -1,3 +1,8 @@
+---
+layout: default
+title: Introduction
+---
+
 #Integration information
 
 ## CP4I
@@ -6,6 +11,7 @@
 ### Designer
 ### Software
 
+This is a test
 
 	<h1>{{ page.title }}</h1>
 	<ul class="posts">
