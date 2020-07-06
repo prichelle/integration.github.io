@@ -11,7 +11,7 @@ title: Introduction
 ### Designer
 ### Software
 
-This is a test
+#Posts
 
 
 	  {% for post in site.posts %}
