@@ -5,6 +5,7 @@ owner:
   name: Pierre Richelle
   bio: "TechSales at IBM"
   email: pierre.richelle@be.ibm.com
+  avatar: bio.png
 permalink:   /:categories/:title/
 markdown:    kramdown
 plugins:
