@@ -10,10 +10,10 @@ If you are interested in some specific information, do not hesitate to contact m
 Software covered:
 - CP4I - IBM Cloud Pak for Integration
 - ACE - AppConnect Enterprise - IBM application integration solution
-- APIC - API Connect - IBM API Management solution
+- [APIC](https://developer.ibm.com/apiconnect/) - API Connect - IBM API Management solution
 - MQ - IBM messaging solution
 - ES - Event Streams - IBM Event solution based on Kafka
-- Aspera - IBM file tarnsfer solution
+- Aspera - IBM file transfer solution
 
 You can find resource information under resources.
 
