@@ -4,6 +4,13 @@ layout: page
 
 {{ content }}
 
+<div class="tags-expo-list">
+  {% for tag in site.categories %}
+  <a href="#{{ tag[0] | slugify }}" class="post-tag">{{ tag[0] }}</a>
+  {% endfor %}
+</div>
+<hr/>
+
 {% assign posts = paginator.posts | default: site.posts %}
 
 <div class="posts-list">
@@ -58,6 +65,8 @@ layout: page
    </article>
   {% endfor %}
 </div>
+
+
 
 {% if paginator.total_pages > 1 %}
 <ul class="pagination main-pager">
