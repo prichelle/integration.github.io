@@ -1,4 +1,8 @@
-# IBM Integration resources
+---
+layout: page
+title: IBM Integration Resources
+subtitle: links to useful places
+---
 
 ## IBM Cloud Pak for Integration
 
@@ -16,3 +20,8 @@
 * [Advanced developer corner](https://developer.asperasoft.com/)
 * [IBM Aspera connect](https://developer.asperasoft.com/web/connect-client/index)
 * [Aspera API](https://api.ibm.com/explorer/catalog/aspera/product/ibm-aspera/doc/overview)
+
+
+## General
+
+* [IBM Middleware community](https://community.ibm.com/community/user/imwuc/globalgroups/cloudintegration)
