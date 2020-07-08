@@ -8,7 +8,7 @@ layout: page
 <div class="blog-tags">
   Tags:
   {% for tag in site.tags %}
-  <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
+  <a href="{{ '/tags' | relative_url }}#{{- tag[0] -}}">{{- tag[0] -}}</a>
   {% endfor %}
 </div>
 {% endif %}
