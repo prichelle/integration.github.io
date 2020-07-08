@@ -4,12 +4,15 @@ layout: page
 
 {{ content }}
 
-<div class="tags-expo-list">
+{% if site.tags.size > 0 %}
+<div class="blog-tags">
+  Tags:
   {% for tag in site.tags %}
   <a href="{{ '/tags' | relative_url }}#{{- tag -}}">{{- tag -}}</a>
   {% endfor %}
 </div>
-<hr/>
+{% endif %}
+
 
 {% assign posts = paginator.posts | default: site.posts %}
 
