@@ -4,7 +4,7 @@ title: About me
 subtitle: Why you'd want to go on a date with me
 ---
 
-My name is Pierre Richelle. 
+My name: Pierre Richelle. 
 
 I am Client Technical Specialist in Integration at IBM.
 I started this role at IBM in 2008.
