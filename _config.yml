@@ -11,8 +11,9 @@ author: Pierre Richelle
 # --- List of links in the navigation bar --- #
 
 navbar-links:
-  Events: "events"
   About Me: "aboutme"
+  Events: "events"
+  Topics: "categories"
   Resources:
     - IBM Integration: "https://developer.ibm.com/integration/"
     - Resource page: "/ressources"
