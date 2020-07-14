@@ -14,6 +14,7 @@ navbar-links:
   About Me: "aboutme"
   Events: "events"
   Topics: "categories"
+  Links: "links"
   Resources:
     - IBM Integration: "https://developer.ibm.com/integration/"
     - Resource page: "/ressources"

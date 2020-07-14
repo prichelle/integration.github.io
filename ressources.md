@@ -1,7 +1,7 @@
 ---
 layout: page
 title: IBM Integration Resources
-subtitle: links to useful places
+subtitle: links to IBM software documentation
 ---
 
 ## IBM Cloud Pak for Integration
