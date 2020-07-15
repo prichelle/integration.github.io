@@ -211,11 +211,11 @@ The helm install
   - a clusterrole for the operator: "dp-operator-default-datapower-operator" ``` kubectl get clusterrole | grep -i datapower ```
   - a clusterrolebinding "dp-operator-default-datapower-operator" to link the serviceaccount to the clusterrole. ``` kubectl get clusterrolebinding | grep -i datapower ```
   - an operator is deployed into your namespace. To check the operator, the following command can be used:  
-````
+```
 kubectl get po | grep datapower
 
 datapower-operator-5577975b6-79cxj   1/1     Running   0          28s
-````
+```
 
 #### Deploy your DataPower 
 
