@@ -102,6 +102,7 @@ kubectl get po | grep datapower
 datapower-operator-5577975b6-79cxj   1/1     Running   0          28s
 ```
 
+
 ### Deploying DataPower
 
 You need to have an operator running.
