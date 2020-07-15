@@ -138,10 +138,126 @@ Check the logs of the operator:
 kubectl logs datapower-operator-... -n <yourNs>
 ```
 
+## install on IKS
+
+### prereqs
+An IBM account
+Install the following cli (be sure to have the proper version - had an oidc issue due to a wrong version)
+- [ibmcloud cli](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
+- helm
+- kubectl
+
+> a wrong version of kubectl can lead to this error : "error: No Auth Provider found for name "oidc"
+### procedure
+
+#### Cluster initialisation
+- Provision a cluster with at least 5 cores
+- Log into your cluster  
+```shell
+ibmcloud login -sso
+```
+  - Get your OTP code and login
+  - Choose your account
+  - check that you are in the right region. Region can be changed with "-r". More information on the [IBM cli doc](https://cloud.ibm.com/docs/cli?topic=cli-ibmcloud_cli)
+
+- check the cluster that you have 
+```
+ibmcloud cs clusters
+````
+- set the cluster configuration for your helm and kubectl
+````
+ibmcloud cs cluster config --cluster <clustername>
+````
+- init helm. Helm will be used to setup the block storage and for installing the DataPower operator.
+```
+curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+chmod 700 get_helm.sh
+./get_helm.sh
+helm init
+kubectl create serviceaccount --namespace kube-system tiller
+kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
+kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
+```
+
+- Install IBM Block Storage
+````
+helm repo add iks-charts https://icr.io/helm/iks-charts
+helm repo update
+helm install --name ibm-block-storage iks-charts/ibmcloud-block-storage-plugin -n kube-system
+````
+> class storage can be double check with ```  kubectl get storageclass  ```
+
+If you would like to access your dp from outside, you can install ingress as described in the [APIC on IKS blog](https://chrisphillips-cminion.github.io/apiconnect/2020/06/24/APIConnect-v10-install-on-IKS.html) at Part 2.6 and 7
+
+#### Installing using operator
+We will use the IBM registry to hold our DP images.
+
+- Create a namespace: kubectl create ns <myNs>
+- Install the operator. This is done using the provided [helm chart](https://github.com/IBM/datapower-operator-chart/tree/master/charts/stable/datapower-operator)
+
+```
+git clone git@github.com:IBM/datapower-operator-chart.git
+cd datapower-operator-chart/charts/stable/datapower-operator
+helm install dp-operator . --namespace <yourNs>
+```
+
+- check the installation  
+The helm install
+  - DataPowerService CRD: ``` kubectl get crd | grep -i datapower ```
+  - a service account to run the operator: **dp-operator-default-datapower-operator**
+  - a clusterrole for the operator: "dp-operator-default-datapower-operator" ``` kubectl get clusterrole | grep -i datapower ```
+  - a clusterrolebinding to link the serviceaccount to the clusterrole: "dp-operator-default-datapower-operator" ``` kubectl get clusterrolebinding | grep -i datapower ```
+  - an operator is deployed into your namespace (default otherwise the one provided with helm) 
+
+````
+kubectl get po | grep datapower
+
+datapower-operator-5577975b6-79cxj   1/1     Running   0          28s
+````
+
+
+- Deploy your DataPower instance  
+  - You will create a secret for the dp admin user
+  - You will create a DPS custom resource from a yaml file
+
+- Create a dp user admin
+
+````
+kubectl create secret generic admin-credentials --from-literal=password=helloworld --from-literal=salt=12345678 --from-literal=method=md5 -n <myNs>
+````
+
+Create the file (for minimum configuration) dps-dp-demo.yaml
+```yaml
+apiVersion: datapower.ibm.com/v1beta1
+kind: DataPowerService
+metadata:
+  name: dp-demo
+spec:
+  license:
+    accept: true
+    use: developers-limited
+  replicas: 1
+  users:
+  - accessLevel: privileged
+    name: admin
+    passwordSecret: admin-credentials
+  version: 10.0.0
+````
+Apply the yaml file:
+``` kubectl apply -f dps-dp-demo.yaml -n <myNs> ```
+
+Check that the deployment succeed:
+``` 
+kubectl get dp -n <myNs> 
+```
+
 ## Resources
 - [DataPower operator documentation](https://ibm.github.io/datapower-operator-doc/apis/datapowerservice/spec/)
 - [DataPower on Docker](https://github.com/ibm-datapower/datapower-labs/tree/master/docker)
 - [DataPower on docker hub](https://hub.docker.com/r/ibmcom/datapower/)
 - [IBM charts](https://github.com/IBM/charts/tree/master/stable)
+
+- [API Connect on IKS](https://chrisphillips-cminion.github.io/apiconnect/2020/06/24/APIConnect-v10-install-on-IKS.html)
+
 ### Assets
 <a href="../assets/files/ibm-datapower.yaml" download="download">DataPower operator deployment</a>
