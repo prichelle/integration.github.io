@@ -170,6 +170,8 @@ Check the logs of the operator:
 ```shell
 kubectl logs datapower-operator-... -n <yourNs>
 ```  
+
+
 ## IKS cluster setup 
 
 ### Prereq
@@ -227,6 +229,3 @@ If you would like to access your dp from outside, you can install ingress as des
 - [IBM charts](https://github.com/IBM/charts/tree/master/stable)
 
 - [API Connect on IKS](https://chrisphillips-cminion.github.io/apiconnect/2020/06/24/APIConnect-v10-install-on-IKS.html)
-
-### Assets
-<a href="../assets/files/ibm-datapower.yaml" download="download">DataPower operator deployment</a>
