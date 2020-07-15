@@ -136,22 +136,27 @@ dp-demo   False   StatefulSet replicas ready: 0/1   10.0.0.0   Secret "admin-cre
 Check the logs of the operator:
 ```shell
 kubectl logs datapower-operator-... -n <yourNs>
-```
+```  
 
-## install on IKS
+## As illustration: Installion on IKS
 
 ### prereqs
 An IBM account
 Install the following cli (be sure to have the proper version - had an oidc issue due to a wrong version)
 - [ibmcloud cli](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
-- helm
+- helm v3
 - kubectl
 
 > a wrong version of kubectl can lead to this error : "error: No Auth Provider found for name "oidc"
+
+
 ### procedure
 
-#### Cluster initialisation
-- Provision a cluster with at least 5 cores
+#### IKS cluster setup 
+This part will explain how to setup a k8s cluster on IKS.
+Most of the steps here were found in the great blog from Chris on [APIC on IKS blog](https://chrisphillips-cminion.github.io/apiconnect/2020/06/24/APIConnect-v10-install-on-IKS.html).
+
+- Provision a cluster with one node with at least 5 cores
 - Log into your cluster  
 ```shell
 ibmcloud login -sso
@@ -168,7 +173,8 @@ ibmcloud cs clusters
 ````
 ibmcloud cs cluster config --cluster <clustername>
 ````
-- init helm. Helm will be used to setup the block storage and for installing the DataPower operator.
+- init helm. Helm will be used to setup the block storage and for installing the DataPower operator.  
+Note that if you don't want to persist any DataPower configuration, block storage is not required.
 ```
 curl -fsSL -o get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
 chmod 700 get_helm.sh
@@ -178,7 +184,6 @@ kubectl create serviceaccount --namespace kube-system tiller
 kubectl create clusterrolebinding tiller-cluster-rule --clusterrole=cluster-admin --serviceaccount=kube-system:tiller
 kubectl patch deploy --namespace kube-system tiller-deploy -p '{"spec":{"template":{"spec":{"serviceAccount":"tiller"}}}}'
 ```
-
 - Install IBM Block Storage
 ````
 helm repo add iks-charts https://icr.io/helm/iks-charts
@@ -189,44 +194,36 @@ helm install --name ibm-block-storage iks-charts/ibmcloud-block-storage-plugin -
 
 If you would like to access your dp from outside, you can install ingress as described in the [APIC on IKS blog](https://chrisphillips-cminion.github.io/apiconnect/2020/06/24/APIConnect-v10-install-on-IKS.html) at Part 2.6 and 7
 
-#### Installing using operator
+#### Install the DataPower operator
 We will use the IBM registry to hold our DP images.
 
-- Create a namespace: kubectl create ns <myNs>
-- Install the operator. This is done using the provided [helm chart](https://github.com/IBM/datapower-operator-chart/tree/master/charts/stable/datapower-operator)
-
+- Create a namespace: ``` kubectl create ns <myNs> ```
+- Install the operator. This is done using the provided [helm chart](https://gi thub.com/IBM/datapower-operator-chart/tree/master/charts/stable/datapower-operator)  
 ```
 git clone git@github.com:IBM/datapower-operator-chart.git
 cd datapower-operator-chart/charts/stable/datapower-operator
 helm install dp-operator . --namespace <yourNs>
 ```
-
 - check the installation  
 The helm install
-  - DataPowerService CRD: ``` kubectl get crd | grep -i datapower ```
-  - a service account to run the operator: **dp-operator-default-datapower-operator**
+  - DataPowerService CRD. Can be checked with ``` kubectl get crd | grep -i datapower ```
+  - a service account **dp-operator-default-datapower-operator** to run the operator
   - a clusterrole for the operator: "dp-operator-default-datapower-operator" ``` kubectl get clusterrole | grep -i datapower ```
-  - a clusterrolebinding to link the serviceaccount to the clusterrole: "dp-operator-default-datapower-operator" ``` kubectl get clusterrolebinding | grep -i datapower ```
-  - an operator is deployed into your namespace (default otherwise the one provided with helm) 
-
+  - a clusterrolebinding "dp-operator-default-datapower-operator" to link the serviceaccount to the clusterrole. ``` kubectl get clusterrolebinding | grep -i datapower ```
+  - an operator is deployed into your namespace. To check the operator, the following command can be used:  
 ````
 kubectl get po | grep datapower
 
 datapower-operator-5577975b6-79cxj   1/1     Running   0          28s
 ````
 
+#### Deploy your DataPower 
 
-- Deploy your DataPower instance  
-  - You will create a secret for the dp admin user
-  - You will create a DPS custom resource from a yaml file
-
-- Create a dp user admin
-
+- Create a dp user admin  
 ````
 kubectl create secret generic admin-credentials --from-literal=password=helloworld --from-literal=salt=12345678 --from-literal=method=md5 -n <myNs>
 ````
-
-Create the file (for minimum configuration) dps-dp-demo.yaml
+- Create the file (for minimum configuration) dps-dp-demo.yaml  
 ```yaml
 apiVersion: datapower.ibm.com/v1beta1
 kind: DataPowerService
@@ -243,10 +240,10 @@ spec:
     passwordSecret: admin-credentials
   version: 10.0.0
 ````
-Apply the yaml file:
+- Apply the yaml file:  
 ``` kubectl apply -f dps-dp-demo.yaml -n <myNs> ```
 
-Check that the deployment succeed:
+- Check that the deployment succeed:  
 ``` 
 kubectl get dp -n <myNs> 
 ```
