@@ -2,6 +2,8 @@
 layout: home
 title: IBM Integration Sofware Gem
 subtitle: CP4I, APIC, ACE, ES, MQ, Aspera 
+sidebar:
+  nav: "docs"
 ---
 <div class="categories sidebar right column-4">
 <p>Did you know ...</p>
