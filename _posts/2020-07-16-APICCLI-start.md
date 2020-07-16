@@ -31,12 +31,12 @@ To start with the cli you need
 
 The steps are  
 
-  a. Login
-  b. execute your commands
-  c. logout
+  a. Login  
+  b. execute your commands  
+  c. logout  
 
 
-1. Get your realm  
+__Get your realm__  
 
 ```
 apic identity-providers:list --scope provider -s <platform-api-hostname>
@@ -49,7 +49,7 @@ cpldap
 
 The scope can be either **admin** or **provider**.  
 
-2. Login  
+__Login__  
 
 ```
 apic login -u <yourUser> -s apic identity-providers:list --scope <scope> -s <platform-api-hostname> -r <scope>/<id-provider>
@@ -65,22 +65,22 @@ Password?
 Logged into myapicmgr.com successfully
 ```
 
-3. Get your organisation  
+__Get your organisation__  
 
 When accessing a provider organisation, the user might be part of multiple organisation. You need to choose the one that you want to work with.
 
 ```
 apic orgs:list -s <platform-api-hostname> --my
-````
+```
 
-Example
+Example 
 
 ```
 apic orgs:list -s myapicmgr.com --my
 innovative-org
 ```
 
-4. Execute your commands  
+__Execute your commands__
 
 For example to list the drafts available in your provider organisation:
 ```
