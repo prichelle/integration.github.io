@@ -35,25 +35,27 @@ b. execute your commands
 c. logout
 
 
+1. Get your realm  
 
-1. Get your realm
-
-````
+```
 apic identity-providers:list --scope provider -s <platform-api-hostname>
 
 default-idp-2
 ibm-common-services
 cpldap
 
-````
-The scope can be either **admin** or **provider**.
+```
 
-2. Login
+The scope can be either **admin** or **provider**.  
+
+2. Login  
 
 ```
 apic login -u <yourUser> -s apic identity-providers:list --scope <scope> -s <platform-api-hostname> -r <scope>/<id-provider>
 ```
-Example
+
+Example  
+
 ```
 apic login -u prichelle -s apic identity-providers:list --scope provider -s myapicmgr.com -r provider/cpldap
 
@@ -62,7 +64,7 @@ Password?
 Logged into myapicmgr.com successfully
 ```
 
-3. Get your organisation
+3. Get your organisation  
 
 When accessing a provider organisation, the user might be part of multiple organisation. You need to choose the one that you want to work with.
 
@@ -71,19 +73,21 @@ apic orgs:list -s <platform-api-hostname> --my
 ````
 
 Example
-``
+
+```
 apic orgs:list -s myapicmgr.com --my
 innovative-org
 ```
 
-4. Execute your commands
+4. Execute your commands  
+
 For example to list the drafts available in your provider organisation:
 ```
 apic drafts:list -s <platform-api-hostname> --org <providerOrg>
 ```
 > providerOrg is the provider organisation that you got previously (example innovative-org)
 
-List of products deployed in a catalog 
+List of products deployed in a catalog  
 ```
 apic products --org <providerOrg> --scope catalog --catalog <catalogName> -s <platform-api-hostname>
 ```
