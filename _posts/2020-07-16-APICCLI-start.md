@@ -29,10 +29,11 @@ To start with the cli you need
 - the **host name** of the manager endpoint. This is the host name of the [platform API](https://www.ibm.com/support/knowledgecenter/SSMNED_v10/com.ibm.apic.install.doc/capic_deploy_overview.html). API Connect allows to either have the same hostname for the four endpoints or different endpoints.
 - the name of the provider organisation is you need to manage your APIs
 
-The steps are
-a. Login
-b. execute your commands
-c. logout
+The steps are  
+
+  a. Login
+  b. execute your commands
+  c. logout
 
 
 1. Get your realm  
