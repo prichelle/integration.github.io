@@ -7,7 +7,13 @@ layout: base
 <div class="container-md">
 
   <div class="row">
-    <div class="col-xl-10 col-lg-10">
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Table of content</h3>
+        </div>
+        {:toc}
+    </nav>
+    <div class="col-xl-8 col-lg-8">
 
       {% if page.gh-repo %}
         {% assign gh_split =  page.gh-repo | split:'/'  %}
