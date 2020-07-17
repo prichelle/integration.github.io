@@ -3,16 +3,9 @@ layout: base
 ---
 
 {% include header.html type="post" %}
-
+{% include toc.html html=content %}
 <div class="container-md">
 
-  <div class="row">
-    <nav id="sidebar">
-        <div class="sidebar-header">
-            <h3>Table of content</h3>
-        </div>
-        {:toc}
-    </nav>
     <div class="col-xl-8 col-lg-8">
 
       {% if page.gh-repo %}
