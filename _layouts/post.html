@@ -7,10 +7,12 @@ layout: base
 <div class="container-md">
 
   <div class="row">
+    <div class="col-xl-2 col-lg-2">
     <nav id="sidebar">
       {% include toc.html html=content %}
     </nav>
-    <div class="col-xl-10 col-lg-10">
+  </div>
+    <div class="col-xl-8 col-lg-8">
 
       {% if page.gh-repo %}
         {% assign gh_split =  page.gh-repo | split:'/'  %}
