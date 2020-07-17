@@ -5,10 +5,18 @@ layout: base
 {% include header.html type="post" %}
 
 <div class="container-md">
-  <div class="sidenav">
-    <a href="#">About</a>
-  </div>
+
   <div class="row">
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3>Page content</h3>
+        </div>
+        <ul class="list-unstyled components">
+            <li>
+                <a href="#about">About</a>
+            </li>
+        </ul>
+    </nav>
     <div class="col-xl-10 col-lg-10">
 
       {% if page.gh-repo %}
