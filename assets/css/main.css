@@ -58,7 +58,7 @@ a:focus {
     transition: all 0.3s;
     top: 0;
     z-index: 999;
-    
+    font-size: 0.8em;
 }
 
 #sidebar.active {
