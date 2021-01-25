@@ -15,8 +15,6 @@ The last section provides references to ressources.
 
 If you are looking to get more insight on different way to protect your API with OAuth with API Connect as the OAutth provider please look at this very good lab [Manage your API with API Connect](https://github.com/ADesprets/bluemix-labs/blob/master/Lab%20API%20-%20Manage%20your%20APIs%20with%20API%20Connect/README-V10.md#table-of-content).
 
-Chapter: Protecting an API with OAuth - External Provider
-
 ## OpenId support
 
 As described in [openid.net](https://openid.net/connect/) OpenId is a simple identity layer on top of the OAuth 2.0 protocol.   
