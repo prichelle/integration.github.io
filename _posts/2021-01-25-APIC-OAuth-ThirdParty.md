@@ -72,7 +72,7 @@ https://<oauth>/introspect -d "token=xxx&token_type_hint=access_token&client_id=
 ```
 
 
-## OAuth configuration
+## API Connect OAuth setup overview
 
 The API Connect configuration is made with the following:   
 - A Third Party OAuth provider resource
@@ -103,12 +103,11 @@ When overriding the security at the operation level it is possible to select fur
 - If the external OAuth provider doesn't provide the required paramaters to achieve your requirements, it is always possible to develop an introspection API proxy in API Connect that would set the required properties and data.
 - The Token Management Service on the API Gateway needs to be configured to support OAuth.
 
-## Detailed API Connect configuration 
+## API Connect setup 
 
+This section describe how the configuration and test has been made on API Connect.
 AppId from IBM Cloud has been used as external OAuth provider.
 
-### API Connect 
-This section describe how the configuration and test has been made on API Connect.
 The steps provided here to create the resources are high level only.
 Detailed information can be found in the knowledge center at [Implementing OAuth security](https://www.ibm.com/support/knowledgecenter/en/SSMNED_v10/com.ibm.apic.apionprem.doc/tutorial_apionprem_oauth_passgrant.html).  
 Another very good article can be found in the resource section at the end of this POST.
@@ -121,7 +120,7 @@ The objects can be created using the [API Connect toolkit](https://www.ibm.com/s
 Before been able to use the toolkit, you need to login.
 I posted an article on how to use the cli if you need additional help.
 
-#### OAuth resource
+### OAuth resource
 The first thing that needs to be done is the creation of the OAuth provider resource in API Connect.  
 
 Before starting this setup you need the following information
@@ -199,7 +198,7 @@ With the configuration file thirdpartyoidc been:
 As we are using https for the introspection, a TLS profile need to be dedined.  
 You would need to configure this using the UI. It should be possible to do this through the command line by getting the default TLS provile ID and setting it to the definition.
 
-#### Catalog setup
+### Catalog setup
 
 In order to be able to deploy the API product with a OAuth provider configured, the referenced OAuth provider needs to be configured at the catalog level.
 
@@ -207,7 +206,7 @@ Organization --> Manage --> Catalog --> Settings --> OAuth provider
 
 > Note that the embedded tookit in API Connect manager browser is deploying the API on the sandbox. Hence the OAuth provider needs to be configure on the **sandbox** catalog.
 
-#### API Security definition
+### API Security definition
 
 The security definition is conigured on the API definition.   
 The developer 
@@ -304,7 +303,7 @@ The API has
   - operation **execute**: protected by OAuth and the scope execute
 
 
-#### Application credentials
+### Application credentials
 
 When a new app is created in the external OAuth provider, the credentials client_id and secret needs to be synchronized with API Connect.
 Credentials can be updated on any existing API Connect application.
@@ -436,11 +435,11 @@ curl -X POST -H "Authorization: Bearer <access_token>" -H "accept: application/j
 {"echo":"success"}
 ```
 
-### AppId configuration
+## AppId configuration
 
 This section shows what need to be configured in IBM AppId.
 
-#### Application
+### Application
 Create an application of type "regularwebapp".
 The information that will be available afterwards are provided here:
 
@@ -462,7 +461,7 @@ Information to note:
 - secret
 - tenant Id
 
-#### Role
+### Role
 A user needs to have a role.
 The role is used to assign scopes to a specified user.  
 -> Manage Authentication -> Profiles & Roles -> Roles  
@@ -486,7 +485,7 @@ The information to note:
 - Scopes
 - name
 
-#### User
+### User
 -> Manage Authentication -> Cloud Directory --> Users  
 Create a user using Cloud directory and assign to the user the required role.  
 When requesting an access token with the user, the scopes returned would be those related to the scope.
@@ -530,7 +529,7 @@ Information to note:
 The link to the role is defined in the user profile.
 -> Manage Authentication -> User profiles 
 
-#### Service credentials
+### Service credentials
 Create a service credential which will provide the token url endpoint.
 
 Information to note:
