@@ -292,11 +292,11 @@ paths:
 
 ```
 
-The API has 
-- The API security is requiring by default a Client Id
-- OAuth security definition
-  - Defines two scopes (audit and execute)
-- two operations where the API Security has been overriden
+The API has the following configuration:
+- An API security that defines that a Client Id is required by default (can be overriden)
+- An API security definition that defines OAuth
+  - It defines two scopes (audit and execute)
+- Two operations where the API Security has been overriden
   - operation **echo**: protected by OAuth and the scope audit
   - operation **execute**: protected by OAuth and the scope execute
 
@@ -334,7 +334,8 @@ To list the consumer organisations (which are the developer organisation in the 
 ./apiccli consumer-orgs:list -c sandbox -s $apicmgmt -o innovative-org
 ```
 
-
+     
+    
 ## Test the configuration
 
 Before been able to access the API you need to subscribe your application to the published API in the developer portal (note that this can also be automated using cli or rest api).
@@ -348,7 +349,11 @@ Example of Curl command:
 curl -X POST -u "<cliendId:cliendSecret>" -d "grant_type=password&username=<userId>&password=<UserPassword>" https://eu-de.appid.cloud.ibm.com/oauth/v4/8794b41b-4705-4381-a96e-46dfabf3f249/token
 ```
 
-If you just need the access token you can use jq to parse the response: "| jq -r '.access_token'".  
+If you just need the access token you can use jq to parse the response: 
+```shell
+curl -X POST -u .... | jq -r '.access_token'
+```
+
 
 On this example, the user <userId> is trying to get access to the API with the application identified by <clientId>.
 In order to be able to access the API, the required scopes need to be available for this combination or user - application.
