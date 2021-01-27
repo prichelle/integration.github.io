@@ -126,7 +126,7 @@ Before starting this setup you need the following information
     - Client Id & secret credentials to call the external OAuth provider (If the external OAuth provider introspect URL is protected)
     - Scopes that you would like to allow for API Security definitions.
 
-Create a OAuth provider resource by logging in in the provider organisation
+Create a OAuth provider resource by logging in in the provider organization
     - Org -> resource -> OAuth provider
 
 The OAuth provider can be created using the command and with the APIConnect toolkit:
@@ -135,8 +135,9 @@ The OAuth provider can be created using the command and with the APIConnect tool
 export apicmgmt=mgmt-api-manager-apic.ibm.cloud
 ./apic oauth-providers:create -s $apicmgmt -o <providerOrg> --format json thirdpartyoidc.json
 ```
+<details>
+<summary>Third Party Yaml object </summary>
 
-With the configuration file thirdpartyoidc been:
 ```json
 {
     "type": "oauth_provider",
@@ -185,16 +186,19 @@ With the configuration file thirdpartyoidc been:
     }
 }
 ```
+
+</details>
+
 **Note**:  
 - The debug option doesn't work with third party provider.
 - scopes: here are the scope that you would allow developer to use. Developer can use a subset but those defined at the API definition level by the developer needs to be listed here (API Connect will prevent to deploy the API definition).
 - Advanced scope allows to call a service that could refine or change the scopes been set by the introspection URL.
-- Token validation: the introspect response paylaod should have the field "active=true".
+- Token validation: the introspect response payload should have the field "active=true".
 
 > If it is not possible to integrate directly with the third party provider, it is always possible to create an API Definition that would act as a proxy. This approach as the advantage that you would have more control and visibility on how to access the third party provider. However this would be an extra API call.
 
-As we are using https for the introspection, a TLS profile need to be dedined.  
-You would need to configure this using the UI. It should be possible to do this through the command line by getting the default TLS provile ID and setting it to the definition.
+As we are using https for the introspection, a TLS profile need to be defined.  
+You would need to configure this using the UI. It should be possible to do this through the command line by getting the default TLS profile ID and setting it to the definition.
 
 ### Catalog setup
 
@@ -206,21 +210,24 @@ Organization --> Manage --> Catalog --> Settings --> OAuth provider
 
 ### API Security definition
 
-The security definition is conigured on the API definition.   
-The developer 
+The security definition is defined in the API definition.   
+The developer tasks are:  
 - open the API Security definition tab
 - add a new security definition
 - provides a meaningful name
 - select the configured OAuth provider, OAuth flow
 - select the scopes that he would like to use. The other scopes can be deleted. 
 
-It is possible to conigure that the OAuth security is applied on all API operation by selecting it under the API Security tab.   
+It is possible to configure that the OAuth security is applied on all API operation by selecting it under the API Security tab.   
 It is possible to configure the OAuth security for a specific operation by overriding the security definition at the API level.
+
 
 An example of an API Definition is provided here and in the 
 [file](../assets/files/oauth-api-loopback.yaml){:target="_blank"}     
 
-![file](../assets/files/oauth-api-loopback.yaml)
+<details>
+  <summary>api using OAuth</summary>   
+
 
 ```yaml
 swagger: '2.0'
@@ -294,12 +301,14 @@ paths:
       produces: []
 
 ```
+</details>
+
 
 The API has the following configuration:
-- An API security that defines that a Client Id is required by default (can be overriden)
+- An API security that defines that a Client Id is required by default (can be overridden)
 - An API security definition that defines OAuth
   - It defines two scopes (audit and execute)
-- Two operations where the API Security has been overriden
+- Two operations where the API Security has been overridden
   - operation **echo**: protected by OAuth and the scope audit
   - operation **execute**: protected by OAuth and the scope execute
 
@@ -397,12 +406,13 @@ For the curious here is the content (it would depends of the OAuth provider) of
 }
 ```
 
+The claims within the JWT token are:   
 - aud: is for whom the access token has been delivered. The access token is to be used by the client application
 - sub: is the user that has been used to get the access token. The user that grants the access to the resource.
 - scope: all the scopes that are allowed for this specific user. In AppId the scopes are provided by the role assigned to the user. **execute** scope is listed in the possible scope for this access token.
 
-
-**the id token**
+<details>
+<summary> Example of id token</summary>
 
 ```json
 {
@@ -430,6 +440,7 @@ For the curious here is the content (it would depends of the OAuth provider) of
   ]
 }
 ```
+</details>
 
 **Note**: AppId doesn't support CORS. Which means that it is not possible to get an access token from the developer portal. The access token should be get directly from the OAuth provider (AppId).
 
@@ -440,6 +451,176 @@ It is now possible to call the protected API:
 curl -X POST -H "Authorization: Bearer <access_token>" -H "accept: application/json" -H "X-IBM-Client-Id: <cliendId>" https://<api-gw>/<provider-org>/<catalog>/loopback/execute
 {"echo":"success"}
 ```
+
+## Implement an introspect API
+This section explains how an introspect API can be build within API Connect.   
+Sometimes the OAuth provider doesn't provide an introspect URL or doesn't provide all the token validation/revocation policies.  
+In that case, using an API Connect API as proxy provides a lot flexibility because all the required security policies can be implemented in such API definition.
+
+Another use case is when the access token is a JWT token and you would like to validate on the gateway the signature of the token as well as the claims.  
+The OAuth 2.0 specification defines how external keys can be fetch from an OAuth 2.0 authorization server. The server can expose [metadata](https://tools.ietf.org/html/rfc8414) which may provide the jwks uri: the referenced document contains the signing key(s) the client uses to validate signatures from the authorization server.
+
+The API function is to validate the access token and return to the gateway a response back that tells if the token is still active and if it is the case for what scopes.
+
+The payload returned should be in the form:
+```json
+{"active":"true","scope":"scope1 scope2"}
+```
+
+The example provided here performs the following:
+- Extract the access token from the introspect call
+- call the authorization server to fetch the JWK keys that will be used to validate the JWT signature
+- validate the JWT signature
+- create the response to the gateway using the JWT claims
+
+If the JWT signature fails, an error is sent back to the gateway that will reject the access.
+
+<details>
+<summary>Introspect API</summary>
+
+```yaml
+swagger: '2.0'
+info:
+  title: OAuth-TP
+  x-ibm-name: oauth-tp
+  version: 1.0.0
+schemes:
+  - https
+basePath: /oauth-tp
+produces:
+  - application/json
+consumes: []
+security:
+  - {}
+securityDefinitions:
+  clientID:
+    type: apiKey
+    in: header
+    name: X-IBM-Client-Id
+x-ibm-configuration:
+  cors:
+    enabled: true
+  gateway: datapower-api-gateway
+  type: rest
+  phase: realized
+  enforced: true
+  testable: true
+  assembly:
+    execute:
+      - gatewayscript:
+          version: 2.0.0
+          title: gatewayscript
+          source: >
+            context.request.body.readAsBuffer(function(error, buffer) {
+              if (error) {
+                context.message.statusCode = '500';
+              }
+              if(buffer) {
+                var response = {"active" : true};
+
+                var bodyStr = buffer.toString();
+                var bodyParsed = bodyStr.split('&');
+
+                for (var i = 0; i < bodyParsed.length; i++) {
+                    var pair = bodyParsed[i].split('=');
+                    console.debug('pair: ' + pair[0]);
+                    if (pair[0]==='token'){
+                        response['reqat'] = pair[1];
+                        context.set('reqat',pair[1]);
+                        console.debug('token: ' + pair[1]);
+                    }
+                 }
+              }
+              else{
+                  context.message.statusCode = '500';
+                  }
+            });
+      - invoke:
+          title: invoke
+          timeout: 60
+          verb: GET
+          cache-response: protocol
+          cache-ttl: 900
+          version: 2.0.0
+          target-url: 'https://authorizationServer/keys'
+          output: rsa256-key
+          header-control:
+            type: blacklist
+            values: []
+          parameter-control:
+            type: blacklist
+            values: []
+          tls-profile: 'tls-client-profile-catalog-default:1.0.0'
+          backend-type: json
+      - gatewayscript:
+          title: gatewayscript
+          version: 2.0.0
+          source: |-
+            var rsa256Key = JSON.parse(context.get('rsa256-key.body'));
+            console.error('rsa keys %s', rsa256Key.keys[0]);
+            context.set('jwk-key', rsa256Key.keys[0]);
+      - jwt-validate:
+          version: 2.0.0
+          title: at-jwt-validate
+          jwt: reqat
+          output-claims: decoded.claims
+          jws-jwk: jwk-key
+          description: test
+      - gatewayscript:
+          title: gatewayscript
+          version: 2.0.0
+          source:  >
+            if (context.get('decoded.claims')) {
+              var response = { "active": true };
+              
+              var decClaims = context.get('decoded.claims');
+              response.scope = decClaims.scp; //claims scp contains the scopes
+              
+              context.set('message.body', response);
+              
+              context.message.header.set('content-type','application/json');
+              context.message.header.remove('authorization');
+
+              context.set('message.status.code', 200);
+
+              console.debug ('>> oauth introspection is successful %s');
+            }
+            else {
+              var response = { "active": false }; //no scope are available
+              context.set('message.body', response);
+              
+              context.message.header.set('Content-Type','application/json; charset=utf-8');
+              context.message.header.remove('authorization');
+              
+              context.set('message.status.code', 200);
+
+              console.debug ('>> oauth introspection failed due to missing scope ');
+            }
+    catch: []
+  application-authentication:
+    certificate: false
+  activity-log:
+    success-content: payload
+    error-content: activity
+    enabled: true
+  buffering: true
+paths:
+  /introspect:
+    post:
+      responses:
+        '200':
+          description: success
+          schema:
+            type: string
+      parameters: []
+      consumes: []
+      produces: []
+      security: []
+
+```
+
+</details>
+
 
 ## AppId configuration
 
