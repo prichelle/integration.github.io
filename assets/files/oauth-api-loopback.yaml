@@ -1,0 +1,94 @@
+swagger: '2.0'
+info:
+  title: loopback
+  x-ibm-name: loopback
+  version: 1.0.0
+schemes:
+  - https
+basePath: /loopback
+security:
+  - clientID: []
+securityDefinitions:
+  extoauth:
+    type: oauth2
+    flow: password
+    x-ibm-oauth-provider: thirdpartyoidc
+    tokenUrl: >-
+      https://eu-de.appid.cloud.ibm.com/oauth/v4/8794b41b-4705-4381-a96e-46dfabf3f249/token
+    scopes:
+      audit: Sample scope description 1
+      openid: to enable OIDC
+  clientID:
+    type: apiKey
+    in: header
+    name: X-IBM-Client-Id
+x-ibm-configuration:
+  cors:
+    enabled: true
+  gateway: datapower-api-gateway
+  type: rest
+  phase: realized
+  enforced: true
+  testable: true
+  assembly:
+    execute:
+      - gatewayscript:
+          version: 2.0.0
+          title: gatewayscript
+          source: |-
+            var response = {"echo":"success"};
+
+            context.message.body.write(JSON.stringify(response));
+    catch:
+      - errors:
+          - RuntimeError
+        execute:
+          - gatewayscript:
+              version: 2.0.0
+              title: gatewayscript
+              source: |-
+                var response = {"error":"runtime"};
+                console.error(context.get('jwt-validate.error-message'));
+                context.message.body.write(JSON.stringify(response));
+          - switch:
+              version: 2.0.0
+              title: switch
+              case:
+                - condition: ($length(jwt-validate.error-message)>0)
+                  execute:
+                    - gatewayscript:
+                        version: 2.0.0
+                        title: gatewayscript
+                        source: |-
+                          var response = {"error":"jwt"};
+                          context.message.body.write(JSON.stringify(response));
+      - default:
+          - gatewayscript:
+              version: 2.0.0
+              title: gatewayscript
+              source: |-
+                var response = {"error":"def"};
+
+                context.message.body.write(JSON.stringify(response));
+  properties:
+    target-url:
+      value: 'http://example.com/operation-name'
+      description: The URL of the target service
+      encoded: false
+  application-authentication:
+    certificate: false
+paths:
+  /echo:
+    get:
+      responses:
+        '200':
+          description: success
+          schema:
+            type: string
+      consumes: []
+      produces: []
+      security:
+        - extoauth:
+            - audit
+            - openid
+          clientID: []
