@@ -1,28 +1,35 @@
-# Third party OAuth provider with API Connect
+---
+layout: post
+title: Third-party OAuth and API Connect  
+subtitle: Protect your API using a third-party OAuth provider
+tags: [apic, oauth]
+comments: true
+category: apic
+---
 
 The aim of this post is to explain how to configure an third party OAuth provider with API Connect (v10).  
-For simplicity the principle is illustrated using a OAuth ressource owner password grant.
+For simplicity the principle is illustrated using a OAuth resource owner password grant.
 
 The sections provided in this topic are:
 - how OpenId is supported
 - how the API Connect security principle
 - how the OAuth objects are configured
 - example test with IBM cloud AppId provider
-   - The example provided here is made with an OAuth ressource owner password grant.
+   - The example provided here is made with an OAuth resource owner password grant.
    - The test example made at the end has been done using IBM App ID as external OAuth provider [AppId getting started](https://cloud.ibm.com/docs/appid?topic=appid-getting-started).
 
-The last section provides references to ressources.
+The last section provides references to resources.
 
-If you are looking to get more insight on different way to protect your API with OAuth with API Connect as the OAutth provider please look at this very good lab [Manage your API with API Connect](https://github.com/ADesprets/bluemix-labs/blob/master/Lab%20API%20-%20Manage%20your%20APIs%20with%20API%20Connect/README-V10.md#table-of-content).
+If you are looking to get more insight on different way to protect your API with OAuth with API Connect as the OAuth provider please look at this very good lab [Manage your API with API Connect](https://github.com/ADesprets/bluemix-labs/blob/master/Lab%20API%20-%20Manage%20your%20APIs%20with%20API%20Connect/README-V10.md#table-of-content).
 
 ## OpenId support
 
 As described in [openid.net](https://openid.net/connect/) OpenId is a simple identity layer on top of the OAuth 2.0 protocol.   
-When an application (f.e. web or mobile application) requests a token to an OIDC provider, it receives additionaly to the access token an id token (id_token). The id token contains information about the user that is accessing the resource.  
+When an application (f.e. web or mobile application) requests a token to an OIDC provider, it receives additionally to the access token an id token (id_token). The id token contains information about the user that is accessing the resource.  
 
 The access token is used by the application to get access to the resource through the API exposed by the gateway.
 
-The application can use the access token as security credentials (Bearer) to get additional information about the user by calling the userinfo of the OIDC provider.
+The application can use the access token as security credentials (Bearer) to get additional information about the user by calling the "userinfo" URL of the OIDC provider.
 
 If you configure API Connect to use an external OIDC provider, the application should get the access token from the external OIDC provider and use the access token to call the API exposed by the Gateway.
 The processing of the access token is the same as it would have been a normal OAuth2 provider.
@@ -31,8 +38,9 @@ The processing of the access token is the same as it would have been a normal OA
 
 This section provides an overview on how API Connect behaves when an external OAuth provider is configured.
 
-When an external OAuth provider is configured, API Connect will delegate the token generation and validation to the third party OAuth provider.
-The different external OAutth provider are defined on the API Connect Third Party OAuth provider resource.
+When an external OAuth provider is configured, API Connect will delegates the token generation and validation to the third party OAuth provider. 
+
+In API Connect, the different external OAuth providers are defined under the OAuth resource section.
 
 The following diagram depicts the flow that happens when using an OAuth resource owner password grant (with oidc)
 
@@ -43,46 +51,55 @@ The flow is as follow:
 * (2) The Third party provides back the "access token", the "scopes" that are authorized with this access token and an "id token" if the OAuth provider support OIDC and the scope "openid" has been requested.  
 * (3) The application uses the "access token" to get access to the API exposed by the API Gateway  
 * (4) The API Gateway calls the third party OAuth provider with the "../introspection" URL.  
-* (5) The Oauth provider sends back a response telling if the token is valid or not allong with supported scopes. The response looks like  
+* (5) The Oauth provider sends back a response telling if the token is valid or not along with supported scopes. The response looks like  
 `{"active":"true","scope":"scope1 scope2"}`  
 The API GW will check that the active field is to "true" and will verify that the returned scopes match the one defined on the security definition of the exposed API. If it doesn't match the call is rejected.  
 It is possible to further validate the scopes or even adapt the scopes by configuring a scope validation step.  
 The introspection URL might be protected and it is possible to provide credentials to gain access to this URL. Credentials can be configured directly on the API Connect OAuth resource or it can be provided by the API call through an Authorization header.     
 * (6) the request is allowed to reach the resource.
 
-Additional information about parameters provided in the request is provided on the test example section.  
-> More details information about the introspection can be found in the knowledge center
-[introspection](https://www.ibm.com/support/knowledgecenter/SSMNED_v10/com.ibm.apic.apionprem.doc/oauth_introspection.html).   
-
-
-Note that API Connect can also be used as an OAuth provider or OIDC provider.
-
-It is good practice to secure your API not only with an access token but with a client id as well. There are multiple reason for this:  
-- The third party provider would like to validate that the client id used by the application matches the one defined in the access token (API Connect sends as part of the introspect request the client id if it was provided).
-- This is also a requirement if you would like to be able to get analytics insight of your application.   
-
-It is therefore necessarely to synchronize the client id and secret between API Connect and the external OAuth provider.
-In this post the approach is to use the OAuth provider application credentials and override (or create) the application credentials within API Connect.
 
 Example of introspect request:
 ```
 https://<oauth>/introspect -d "token=xxx&token_type_hint=access_token&client_id=inputAppClientId&scope=apiprotectedscope"
 ```
 
+Additional information about parameters provided in the request is provided on the example section. Complete details information about the introspection can be found in the knowledge center at [introspection](https://www.ibm.com/support/knowledgecenter/SSMNED_v10/com.ibm.apic.apionprem.doc/oauth_introspection.html).   
 
-## API Connect OAuth setup overview
+Note that API Connect can also play the role of an OAuth or OIDC provider.
 
-The API Connect configuration is made with the following:   
-- A Third Party OAuth provider resource
-- Add the resource to the catalog where the API will be deployed
+It is good practice to secure your API not only with an access token but with a client id as well. There are multiple reason for this:  
+- The third party provider would like to validate that the client id used by the application matches the one defined in the access token (API Connect sends as part of the introspect request the client id if it was provided).
+- This is also a requirement if you would like to be able to get analytics insight of your application.   
+
+It is therefore necessarily to synchronize the client id and secret between API Connect and the external OAuth provider.
+In this post the approach is to use the OAuth provider application credentials and override (or create) the application credentials within API Connect.
+
+## API Connect Setup
+
+The steps provided to create the different resources are high level only.
+Detailed information can be found in the knowledge center at [Implementing OAuth security](https://www.ibm.com/support/knowledgecenter/en/SSMNED_v10/com.ibm.apic.apionprem.doc/tutorial_apionprem_oauth_passgrant.html).  
+Another very good article that describes how to secure an API in API Connect can be found here at the section [using OAuth to protect your API](https://github.com/ADesprets/bluemix-labs/blob/master/Lab%20API%20-%20Manage%20your%20APIs%20with%20API%20Connect/README-V10.md#step-12---using-oauth-to-protect-your-api).
+
+
+This post focus more on understanding the principle and the usage of the different parameters. 
+
+I provided example on how to create the objects using [API Connect toolkit cli](https://www.ibm.com/support/knowledgecenter/en/SSMNED_v10/com.ibm.apic.toolkit.doc/tapim_cli_install.html).
+> Before been able to use the toolkit, you need to login.
+I posted an article on how to use the cli if you need additional help.
+
+### Setup Overview
+
+The following tasks have to be made on API Connect in order to use OAuth:   
+- Create a third-party OAuth provider resource
+- Add the resource to the catalog where the API Project will be deployed
 - Set the API Security definition in your API definition
 
-The OAuth resource is usually configured by an organisation administrator. 
-You defines on the OAuth resource  
-- The type of OAuth grant flow
-- all the required parameters to access the third party provider
+The OAuth resource is usually configured by an organization administrator. 
+The OAuth resource defines
+- the type of OAuth grant flow to be supported
+- the required URLs with the credentials to access the third-party provider 
 - the allowed scopes that can be used when securing an API.  
-Example values are provided in the test section.
 
 The OAuth provider resource needs to be configured on the catalog where the API product will be deployed. 
 
@@ -90,33 +107,16 @@ The following tasks is made on the API definition to secure it with the configur
 - Add a security definition
   - select the OAuth provider resource. This will provides all the predefined configuration.
   - select the possible OAuth flow grant that is supported and that has been configured on the OAuth resource
-  - select the scope that you would like to use to protect your API operations.   
-  The allowed scopes are only those that have been configured on the OAuth resource. Adding an undefined scope will prevent the flow to be deployed. This prevent a developer to choose whatever scope. The allowed scopes are those defined by the administrator.   
+  - select the scope(s) that you would like to use to protect your API operations.   
+  The allowed scopes are only those that have been configured on the OAuth resource. Adding an undefined scope will prevent the flow to be deployed. This prevent a developer to choose an unsupported scope for the API.   
   It is possible to select a subset of scopes (delete the scopes that you don't want to use).
-- You can apply this securitty definition on all operations by adding it tto the API security configuration or you can override it at the operation level.  
-When overriding the security at the operation level it is possible to select further a subset of scopes. When multiple scope are selected for an operation, all the scopes needs to be return during the access token introspection.
+- You can apply this security definition on all operations by adding it to the API security configuration or you can override it at the operation level.  
+When overriding the security at the operation level it is possible to select a subset of scopes. When multiple scopes are selected for an operation, all the scopes need to be returned during the access token introspection.
 
 **Note**: 
-- The external OAuth provider needs to return the allowed scope in order for the API GW to enforce the defined scope at the API level.
-- If the external OAuth provider doesn't provide the required paramaters to achieve your requirements, it is always possible to develop an introspection API proxy in API Connect that would set the required properties and data.
+- The external OAuth provider needs to return scopes in order for the API GW to enforce the scopes defined to secure the API. 
+- If the external OAuth provider doesn't provide the required scopes or introspect URL, it is always possible to develop an introspection API proxy in API Connect that would set the required properties and data.
 - The Token Management Service on the API Gateway needs to be configured to support OAuth.
-
-## API Connect setup 
-
-This section describe how the configuration and test has been made on API Connect.
-AppId from IBM Cloud has been used as external OAuth provider.
-
-The steps provided here to create the resources are high level only.
-Detailed information can be found in the knowledge center at [Implementing OAuth security](https://www.ibm.com/support/knowledgecenter/en/SSMNED_v10/com.ibm.apic.apionprem.doc/tutorial_apionprem_oauth_passgrant.html).  
-Another very good article can be found in the resource section at the end of this POST.
-
-The focus is more on understanding the paramaters and how to use them. 
-I provided json file and command file that can be used.
-
-The objects can be created using the [API Connect toolkit](https://www.ibm.com/support/knowledgecenter/en/SSMNED_v10/com.ibm.apic.toolkit.doc/tapim_cli_install.html).
-
-Before been able to use the toolkit, you need to login.
-I posted an article on how to use the cli if you need additional help.
 
 ### OAuth resource
 The first thing that needs to be done is the creation of the OAuth provider resource in API Connect.  
@@ -217,7 +217,10 @@ The developer
 It is possible to conigure that the OAuth security is applied on all API operation by selecting it under the API Security tab.   
 It is possible to configure the OAuth security for a specific operation by overriding the security definition at the API level.
 
-An example of an API Definition is provided here 
+An example of an API Definition is provided here and in the 
+[file](../assets/files/oauth-api-loopback.yaml){:target="_blank"}     
+
+![file](../assets/files/oauth-api-loopback.yaml)
 
 ```yaml
 swagger: '2.0'
