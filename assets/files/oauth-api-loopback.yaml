@@ -6,8 +6,6 @@ info:
 schemes:
   - https
 basePath: /loopback
-security:
-  - clientID: []
 securityDefinitions:
   extoauth:
     type: oauth2
@@ -16,12 +14,14 @@ securityDefinitions:
     tokenUrl: >-
       https://eu-de.appid.cloud.ibm.com/oauth/v4/8794b41b-4705-4381-a96e-46dfabf3f249/token
     scopes:
-      audit: Sample scope description 1
-      openid: to enable OIDC
+      audit: audit scope to access API
+      execute: scope to access API with scope execute
   clientID:
     type: apiKey
     in: header
     name: X-IBM-Client-Id
+security:
+  - clientID: []
 x-ibm-configuration:
   cors:
     enabled: true
@@ -37,44 +37,7 @@ x-ibm-configuration:
           title: gatewayscript
           source: |-
             var response = {"echo":"success"};
-
             context.message.body.write(JSON.stringify(response));
-    catch:
-      - errors:
-          - RuntimeError
-        execute:
-          - gatewayscript:
-              version: 2.0.0
-              title: gatewayscript
-              source: |-
-                var response = {"error":"runtime"};
-                console.error(context.get('jwt-validate.error-message'));
-                context.message.body.write(JSON.stringify(response));
-          - switch:
-              version: 2.0.0
-              title: switch
-              case:
-                - condition: ($length(jwt-validate.error-message)>0)
-                  execute:
-                    - gatewayscript:
-                        version: 2.0.0
-                        title: gatewayscript
-                        source: |-
-                          var response = {"error":"jwt"};
-                          context.message.body.write(JSON.stringify(response));
-      - default:
-          - gatewayscript:
-              version: 2.0.0
-              title: gatewayscript
-              source: |-
-                var response = {"error":"def"};
-
-                context.message.body.write(JSON.stringify(response));
-  properties:
-    target-url:
-      value: 'http://example.com/operation-name'
-      description: The URL of the target service
-      encoded: false
   application-authentication:
     certificate: false
 paths:
@@ -90,5 +53,17 @@ paths:
       security:
         - extoauth:
             - audit
-            - openid
           clientID: []
+  /execute:
+    get:
+      responses:
+        '200':
+          description: success
+          schema:
+            type: object
+      security:
+        - clientID: []
+          extoauth:
+            - execute
+      consumes: []
+      produces: []

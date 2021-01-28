@@ -60,8 +60,13 @@ The introspection URL might be protected and it is possible to provide credentia
 
 
 Example of introspect request:
-```
-https://<oauth>/introspect -d "token=xxx&token_type_hint=access_token&client_id=inputAppClientId&scope=apiprotectedscope"
+```s
+POST /oauth/introspectURL HTTP/1.1
+     Host: apiconnect.ibm.com
+     Content-Type: application/x-www-form-urlencoded
+     x-Introspect-type: customHeader
+     x-custom-myHeader: myValue
+     token=xxx&token_type_hint=access_token&client_id=inputAppClientId&scope=apiprotectedscope"
 ```
 
 Additional information about parameters provided in the request is provided on the example section. Complete details information about the introspection can be found in the knowledge center at [introspection](https://www.ibm.com/support/knowledgecenter/SSMNED_v10/com.ibm.apic.apionprem.doc/oauth_introspection.html).   
@@ -462,9 +467,21 @@ The OAuth 2.0 specification defines how external keys can be fetch from an OAuth
 
 The API function is to validate the access token and return to the gateway a response back that tells if the token is still active and if it is the case for what scopes.
 
-The payload returned should be in the form:
+The payload returned should be in the form:  
+
 ```json
-{"active":"true","scope":"scope1 scope2"}
+   HTTP/1.1 200 OK
+    Content-Type: application/json;charset=UTF-8
+    Cache-Control: no-store
+    Pragma: no-cache
+
+    {
+      "active":true,
+       "token_type":"bearer",
+       "client_id":"xxx-xxx",
+       "scope":"scope1 scope2",
+       ...
+    }
 ```
 
 The example provided here performs the following:
@@ -475,6 +492,7 @@ The example provided here performs the following:
 
 If the JWT signature fails, an error is sent back to the gateway that will reject the access.
 
+The file is available in my [github OAuth section](https://github.com/prichelle/apic-v10-tutorials/blob/main/oauth/oauth-api-introspect-proxy.yaml) as well.
 <details>
 <summary>Introspect API</summary>
 
