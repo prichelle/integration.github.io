@@ -146,8 +146,7 @@ A "thirdpartyoidc" yaml is provided here after:
 
 
 <details>
-  <summary>ThirdPArty OAuth resource</summary>   
-<p>
+
 ```json
 {
     "type": "oauth_provider",
@@ -196,7 +195,6 @@ A "thirdpartyoidc" yaml is provided here after:
     }
 }
 ```
-    </p>
 </details>
 
 Some **notes**:  
