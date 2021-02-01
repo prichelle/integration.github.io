@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Third-party OAuth and API Connect  
+title: Third-party OAuth in API Connect  
 subtitle: Protect your API using a third-party OAuth provider
 tags: [apic, oauth]
 comments: true
@@ -8,6 +8,7 @@ category: apic
 ---
 
 The aim of this post is to explain how to configure an third party OAuth provider with API Connect (v10).  
+I also provide how you could create a proxy to play the role of the introspect URL on the behalf of the OAuth server. In this approach you could validate JWT token using JWK.   
 For simplicity the principle is illustrated using a OAuth resource owner password grant.
 
 The sections provided in this topic are:
