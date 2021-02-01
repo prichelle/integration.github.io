@@ -140,7 +140,8 @@ The OAuth provider can be created using the command and with the APIConnect tool
 ```shell
 export apicmgmt=mgmt-api-manager-apic.ibm.cloud
 ./apic oauth-providers:create -s $apicmgmt -o <providerOrg> --format json thirdpartyoidc.json
-```
+```  
+
 <details>
 <summary>Third Party Yaml object </summary>
 
@@ -191,7 +192,7 @@ export apicmgmt=mgmt-api-manager-apic.ibm.cloud
         }
     }
 }
-```
+```   
 
 </details>
 
