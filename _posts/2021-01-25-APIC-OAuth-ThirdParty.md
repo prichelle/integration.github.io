@@ -145,6 +145,9 @@ export apicmgmt=mgmt-api-manager-apic.ibm.cloud
 A "thirdpartyoidc" yaml is provided here after:  
 
 
+<details>
+  <summary>api using OAuth</summary>   
+
 ```json
 {
     "type": "oauth_provider",
@@ -194,6 +197,8 @@ A "thirdpartyoidc" yaml is provided here after:
 }
 ```
     
+</details>
+
 Some **notes**:  
 - The debug option doesn't work with third party provider.
 - scopes: here are the scope that you would allow developer to use. Developer can use a subset but those defined at the API definition level by the developer needs to be listed here (API Connect will prevent to deploy the API definition).
