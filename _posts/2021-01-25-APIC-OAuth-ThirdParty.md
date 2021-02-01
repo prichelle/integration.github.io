@@ -145,9 +145,13 @@ export apicmgmt=mgmt-api-manager-apic.ibm.cloud
 A "thirdpartyoidc" yaml is provided here after:  
 
 <details>
-   <summary>Third Party Yaml object </summary>
+   <summary>Third Party Yaml object </summary>   
    
-Third Party Yaml resource object:
+Third Party Yaml resource object:   
+
+````
+test
+````
 
 ```
 {
