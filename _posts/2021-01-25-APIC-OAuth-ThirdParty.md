@@ -144,6 +144,8 @@ export apicmgmt=mgmt-api-manager-apic.ibm.cloud
 
 <details>
    <summary>Third Party Yaml object </summary>
+   
+Third Party Yaml resource object:
 
 ```json
 {
