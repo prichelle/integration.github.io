@@ -146,7 +146,7 @@ A "thirdpartyoidc" yaml is provided here after:
 
 
 <details>
-  <summary>api using OAuth</summary>   
+  <summary>ThirdPArty OAuth resource</summary>   
 <p>
 ```json
 {
