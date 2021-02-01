@@ -142,6 +142,8 @@ export apicmgmt=mgmt-api-manager-apic.ibm.cloud
 ./apic oauth-providers:create -s $apicmgmt -o <providerOrg> --format json thirdpartyoidc.json
 ```  
 
+A "thirdpartyoidc" yaml is provided here after:  
+
 <details>
    <summary>Third Party Yaml object </summary>
    
@@ -233,7 +235,8 @@ It is possible to configure the OAuth security for a specific operation by overr
 
 An example of an API Definition is provided here and in the 
 [file](../assets/files/oauth-api-loopback.yaml){:target="_blank"}     
-
+   
+   
 <details>
   <summary>api using OAuth</summary>   
 
