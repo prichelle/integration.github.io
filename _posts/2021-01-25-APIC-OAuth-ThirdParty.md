@@ -144,16 +144,8 @@ export apicmgmt=mgmt-api-manager-apic.ibm.cloud
 
 A "thirdpartyoidc" yaml is provided here after:  
 
-<details>
-   <summary>Third Party Yaml object </summary>   
-   
-Third Party Yaml resource object:   
 
-````
-test
-````
-
-```
+```json
 {
     "type": "oauth_provider",
     "api_version": "2.0.0",
@@ -200,9 +192,7 @@ test
         }
     }
 }
-```  
-
-</details>
+```
     
 Some **notes**:  
 - The debug option doesn't work with third party provider.
