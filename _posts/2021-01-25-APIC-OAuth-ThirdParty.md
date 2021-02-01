@@ -143,7 +143,7 @@ export apicmgmt=mgmt-api-manager-apic.ibm.cloud
 ```  
 
 <details>
-<summary>Third Party Yaml object </summary>
+   <summary>Third Party Yaml object </summary>
 
 ```json
 {
@@ -192,11 +192,11 @@ export apicmgmt=mgmt-api-manager-apic.ibm.cloud
         }
     }
 }
-```   
+```  
 
 </details>
-
-**Note**:  
+    
+Some **notes**:  
 - The debug option doesn't work with third party provider.
 - scopes: here are the scope that you would allow developer to use. Developer can use a subset but those defined at the API definition level by the developer needs to be listed here (API Connect will prevent to deploy the API definition).
 - Advanced scope allows to call a service that could refine or change the scopes been set by the introspection URL.
