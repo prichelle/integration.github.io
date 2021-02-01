@@ -149,7 +149,7 @@ A "thirdpartyoidc" yaml is provided here after:
    
 Third Party Yaml resource object:
 
-```json
+```
 {
     "type": "oauth_provider",
     "api_version": "2.0.0",
@@ -236,7 +236,7 @@ It is possible to configure the OAuth security for a specific operation by overr
 An example of an API Definition is provided here and in the 
 [file](../assets/files/oauth-api-loopback.yaml){:target="_blank"}     
    
-   
+
 <details>
   <summary>api using OAuth</summary>   
 
