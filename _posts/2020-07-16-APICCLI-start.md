@@ -36,7 +36,8 @@ The steps are
   c. logout  
 
 
-__Get your realm__  
+__1. Get your realm__  
+The following command will provide you the id provider that can be used on the login command.  
 
 ```
 apic identity-providers:list --scope provider -s <platform-api-hostname>
@@ -47,25 +48,26 @@ cpldap
 
 ```
 
+The id provider that you could use is "default-idp-2" (which is the local APIC UR) or "cpldap" (this is a created UR using an LDAP on this stack).  
 The scope can be either **admin** or **provider**.  
 
-__Login__  
+__2. Login__  
 
 ```
-apic login -u <yourUser> -s apic identity-providers:list --scope <scope> -s <platform-api-hostname> -r <scope>/<id-provider>
+apic login -u <yourUser> --scope <scope> -s <platform-api-hostname> -r <scope>/<id-provider>
 ```
 
 Example  
 
 ```
-apic login -u prichelle -s apic identity-providers:list --scope provider -s myapicmgr.com -r provider/cpldap
+apic login -u prichelle --scope provider -s <platform-api-hostname> -r provider/cpldap
 
 Enter your API Connect credentials
-Password?
+Password?  
 Logged into myapicmgr.com successfully
 ```
 
-__Get your organisation__  
+__3. Get your organisation__  
 
 When accessing a provider organisation, the user might be part of multiple organisation. You need to choose the one that you want to work with.
 
@@ -80,7 +82,7 @@ apic orgs:list -s myapicmgr.com --my
 innovative-org
 ```
 
-__Execute your commands__
+__4. Execute your commands__
 
 For example to list the drafts available in your provider organisation:
 ```
