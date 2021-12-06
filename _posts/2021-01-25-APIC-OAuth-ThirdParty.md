@@ -1,7 +1,8 @@
 ---
-layout: post
 title: Third-party OAuth in API Connect  
 subtitle: Protect your API using a third-party OAuth provider
+toc: true
+toc_sticky: true
 tags: [apic, oauth]
 comments: true
 category: apic

@@ -1,5 +1,4 @@
 ---
-layout: post
 title: APIC Assembly Limit
 subtitle: Assembly rate limit, count limit and burst limit
 tags: [apic, development]

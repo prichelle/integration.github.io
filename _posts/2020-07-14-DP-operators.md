@@ -1,7 +1,8 @@
 ---
-layout: post
 title: DataPower Operators  
 subtitle: k8s DataPower on steroids
+toc: true
+toc_sticky: true
 tags: [dp, admin, k8s]
 comments: true
 category: dp

@@ -1,5 +1,4 @@
 ---
-layout: post
 title: APIC CLI Getting started
 subtitle: How to get the cli and login
 tags: [apic, devops]

@@ -1,5 +1,4 @@
 ---
-layout: post
 title: API Gateway settings reviewed  
 subtitle: Overview of the interaction between the manager and the API Gateway service
 tags: [apic, config]
