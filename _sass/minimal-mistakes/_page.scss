@@ -4,7 +4,7 @@
 
 #main {
   @include clearfix;
-  margin-left: auto;
+  margin-left: 1em;
   margin-right: auto;
   padding-left: 1em;
   padding-right: 1em;
@@ -17,6 +17,7 @@
   @include breakpoint($x-large) {
     max-width: $max-width;
   }
+
 }
 
 body {
@@ -38,6 +39,9 @@ body {
 .page {
   @include breakpoint($large) {
     float: right;
+    ///     float: left;
+
+
     width: calc(100% - #{$right-sidebar-width-narrow});
     padding-right: $right-sidebar-width-narrow;
   }
@@ -45,7 +49,7 @@ body {
   @include breakpoint($x-large) {
     width: calc(100% - #{$right-sidebar-width});
     padding-right: $right-sidebar-width;
-  }
+   }
 
   .page__inner-wrap {
     float: left;
@@ -53,6 +57,7 @@ body {
     margin-left: 0;
     margin-right: 0;
     width: 100%;
+    // width: calc(max-content-#{$right-sidebar-width});
     clear: both;
 
     .page__content,
@@ -545,6 +550,7 @@ body {
   .page {
     @include breakpoint($large) {
       padding-right: 0;
+      // padding-right: $right-sidebar-width;
     }
 
     @include breakpoint($x-large) {

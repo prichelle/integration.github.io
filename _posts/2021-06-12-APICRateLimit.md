@@ -1,9 +1,16 @@
 ---
+layout: single
+author_profile: true
+toc: true
+toc_sticky: true
 title: APIC Assembly Limit
 subtitle: Assembly rate limit, count limit and burst limit
 tags: [apic, development]
 comments: true
 category: apic
+permalinks:
+  category: /categories/:name/
+  tag: /tags/:name/
 ---
 # Introduction
 
