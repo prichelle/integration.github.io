@@ -10,7 +10,7 @@ This post provides information on the settings defined on the API Gateway Servic
 It provides as well an overview on the interaction between the API Connect manager and the API Gateway (DataPower).
 
 # Configuration 
-![interaction diagram](../assets/img/apic/mgmt-apigw.png)
+![interaction diagram](../assets/images/apic/mgmt-apigw.png)
 
 The new API Gateway (DataPower) is using a new service called the **API Gateway Service** (GWS).
 This service is receiving configuration from API Connect manager and is also calling API Connect manager.
