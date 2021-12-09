@@ -183,22 +183,11 @@ public class KafkaAvroConsumer {
 
 # Resources
 
+Some additional resources.
 
-https://es-dev-ibm-es-ac-reg-external-event.cp4i21-5b7e0d81360e5972646d63308bd04bf7-0000.eu-de.containers.appdomain.cloud/api/artifacts
-
-
-https://github.com/dalelane/ibm-ace-avrodeserialize/blob/master/AvroDeserialize.java
-https://www.apicur.io/registry/docs/apicurio-registry/1.3.3.Final/getting-started/assembly-using-kafka-client-serdes.html#registry-serdes-types-avro-registry
-
-https://dalelane.co.uk/blog/?p=4518
-
-https://www.asyncapi.com/docs/specifications/v2.0.0#messageObjectSchemaFormatTable
-
-echo -n | openssl s_client -connect $HOST:443 -servername $HOST -showcerts | openssl x509 > mycert.crt
-keytool -import -alias mycert -file mycert.crt -keystore mycert.p12 -storepass password --noprompt
-
-Curl -k -u es-reg:CV1w6CImAurw
- https://es-dev-ibm-es-ac-reg-external-event.cp4i21-5b7e0d81360e5972646d63308bd04bf7-0000.eu-de.containers.appdomain.cloud/api/artifacts
+Example of java code used for [AppConnect Enterprise Java compute node](https://github.com/dalelane/ibm-ace-avrodeserialize/blob/master/AvroDeserialize.java) written by Dale Lane. The [Blog](https://dalelane.co.uk/blog/?p=4518).
 
 
-https://es-dev-reg-external.cp4i21-5b7e0d81360e5972646d63308bd04bf7-0000.eu-de.containers.appdomain.cloud/api/ccompat/schemas/types
+Information on [Avro SerDes](https://www.apicur.io/registry/docs/apicurio-registry/1.3.3.Final/getting-started/assembly-using-kafka-client-serdes.html#registry-serdes-types-avro-registry)
+
+
