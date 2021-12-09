@@ -126,7 +126,7 @@ Options:
 # Exammple
 A rate limit example is provided to illustrate the usage.
 
-![assembly rate limit](../assets/images/apic/assemblyratelimit.png)
+![assembly rate limit](/assets/images/apic/assemblyratelimit.png)
 
 In this example the weight is resolved dynamically. For the count limit it is resolved from the context variable "weight" and for the rate limit it is resolved from the document size computed by the parse policy.
 

@@ -15,7 +15,7 @@ You can find information on this tool in the [knowledge center](https://www.ibm.
 
 It provides the following support migration capabilities:
 
-<img src="../assets/images/apic/AMUsupport.png" alt="drawing" width="200"/>
+<img src="/assets/images/apic/AMUsupport.png" alt="drawing" width="200"/>
 
 In a nutshell all your configurations would be migrated except the Gateway extensions that would require manual interventions.
 

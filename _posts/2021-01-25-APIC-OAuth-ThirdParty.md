@@ -46,7 +46,7 @@ In API Connect, the different external OAuth providers are defined under the OAu
 
 The following diagram depicts the flow that happens when using an OAuth resource owner password grant (with oidc)
 
-![OAuth interaction diagram](../assets/images/apic/oauth-flow.png)
+![OAuth interaction diagram](/assets/images/apic/oauth-flow.png)
 
 The flow is as follow:  
 * (1) The application request an access token using the "../token" provider URL and an id token (for OIDC by setting the scope "openid").
@@ -232,7 +232,7 @@ It is possible to configure the OAuth security for a specific operation by overr
 
 
 An example of an API Definition is provided here and in the 
-[file](../assets/files/oauth-api-loopback.yaml){:target="_blank"}     
+[file](/files/oauth-api-loopback.yaml){:target="_blank"}     
    
 
 <details>
