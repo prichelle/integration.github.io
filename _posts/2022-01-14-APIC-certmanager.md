@@ -208,7 +208,9 @@ Let's see how this can be leverage to check the certificate in API Connect.
 Let's apply this to the management subsystem.
 
 
-1. List the secret with their issuer 
+1. List the secret with their issuer  
+
+The following command provides the list of certificate object for the management:  
 
 ```shell  
 
@@ -272,9 +274,9 @@ oc get issuer apic-mgmt-ca -o json | jq ' .metadata.name + " > sec: " +  .spec.c
 "apic-mgmt-ca > sec: apic-mgmt-ca"
 ```
 
-As expected the secret containing the root X509 ca used by the CA Issuer is **apic-mgmt-ca**.
+As expected the secret containing the root X509 ca used by the CA Issuer is **apic-mgmt-ca**.   
 
-3. extract the ca certificate from the ca issuer secret
+3. extract the ca certificate from the ca issuer secret  
 
 ```shell
 oc get secret apic-mgmt-ca -o jsonpath="{.data.ca\.crt}" | base64 -D > apic-mgmt-ca.crt
