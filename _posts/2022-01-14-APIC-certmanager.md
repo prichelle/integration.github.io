@@ -208,7 +208,7 @@ Let's see how this can be leverage to check the certificate in API Connect.
 Let's apply this to the management subsystem.
 
 
-1. List the secret with their issuer  
+### 1 - List the secret with their issuer  
 
 The following command provides the list of certificate object for the management:  
 
@@ -254,7 +254,7 @@ When certificate are issued by the same CA issuer, it is possible to validate th
 This might be useful if the ca cert has been refreshed while the secret wasn't.
 
 
-2. get the secret from the **ca issuer**
+### 2 - Get the secret from the **ca issuer**
 
 This secret will contains the ca that is used for all the generated certificate.  
 We store this ca locally so we can use it afterwards to verify the certificates.  
@@ -276,13 +276,13 @@ oc get issuer apic-mgmt-ca -o json | jq ' .metadata.name + " > sec: " +  .spec.c
 
 As expected the secret containing the root X509 ca used by the CA Issuer is **apic-mgmt-ca**.   
 
-3. extract the ca certificate from the ca issuer secret  
+### 3 - extract the ca certificate from the ca issuer secret  
 
 ```shell
 oc get secret apic-mgmt-ca -o jsonpath="{.data.ca\.crt}" | base64 -D > apic-mgmt-ca.crt
 ```
 
-4. Validate all the related certificate with the ca
+### 4 - Validate all the related certificate with the ca
 
 The following command, list the certificate with the ca issuer "apic-mgmt-ca" and gets the generated secret. From the secret extract the tls crt and verify it against the previously saved ca.
 
