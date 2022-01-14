@@ -2,7 +2,7 @@
 layout: single
 title: API Connect V10 Cert Manager
 subtitle: Check and Update self-signed certificate with new cert manager
-tags: [apic, certificate]
+tags: [apic, certificate, k8s]
 comments: true
 category: apic
 author_profile: true
@@ -208,8 +208,10 @@ Let's see how this can be leverage to check the certificate in API Connect.
 Let's apply this to the management subsystem.
 
 
-1. List the secret with their issuer
-```shell 
+1. List the secret with their issuer 
+
+```shell  
+
 oc get cert -o wide | grep mgmt
 
 apic-mgmt-aa286878-postgres             True    apic-mgmt-aa286878-postgres             apic-mgmt-ca          Certificate is up to date and has not expired   9d    2024-01-04T17:04:29Z
