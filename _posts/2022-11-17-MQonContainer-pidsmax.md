@@ -10,8 +10,6 @@ toc: true
 toc_sticky: true
 ---
 
-# Introduction
-
 MQ is a multithreaded solution that might spawn a relative high number of threads that might be incompatible with the default value of the operating system when it will run.
 
 OpenShift limit now by default the maximum threads number that can be spawn in a container to 1024 which might be not compatible for your MQ deployment.  
