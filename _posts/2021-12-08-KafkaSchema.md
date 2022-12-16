@@ -82,7 +82,7 @@ When using an AVRO schema with AppConnect Designer, the message payload is seria
 If you plan to interact with AppConnect Designer through Kafka with AVRO Schema, you need to follow this wire format. 
 In Java this can be achieved by using the SerDes library from confluent or using a generic avro serializer.
 
-The following code provides an example to consumer a Kafka message sent by AppConnect Designer with an Avro Schema using Java with teh generic Avro SerDes.
+The following code provides an example to consume a Kafka message sent by AppConnect Designer with an Avro Schema using Java with the generic Avro SerDes.
 
 ```java
 
