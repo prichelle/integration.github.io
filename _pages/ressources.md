@@ -36,6 +36,9 @@ author_profile: true
 ## IBM DataPower
 * [DataPower github](https://github.com/ibm-datapower/): sample, tutorial, tools, devops
 
+## IBM MQ
+* [Expose MQ running on OpenShift](https://community.ibm.com/community/user/integration/blogs/callum-jackson1/2021/02/15/connecting-to-a-queue-manager-running-in-openshift): information on SNI and how to expose MQ when running on openshift.
+
 ## General
 
 * [IBM Middleware community](https://community.ibm.com/community/user/imwuc/globalgroups/cloudintegration)
