@@ -146,7 +146,7 @@ export apicmgmt=mgmt-api-manager-apic.ibm.cloud
 A "thirdpartyoidc" yaml is provided here after:  
 
 
-<details>
+<div markdown="1">
 
 API Connect OpenAPI definition: 
 ```json
@@ -198,7 +198,7 @@ API Connect OpenAPI definition:
 }
 ```  
 
-</details>
+</div>
 
 Some **notes**:  
 - The debug option doesn't work with third party provider.

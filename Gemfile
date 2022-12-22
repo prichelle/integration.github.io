@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 ruby "2.6.3"
-gem "jekyll", "~> 3.7"
+gem "jekyll", "~> 4.24"
 gem "minimal-mistakes-jekyll"
 group :jekyll_plugins do
   gem "jekyll-remote-theme"
