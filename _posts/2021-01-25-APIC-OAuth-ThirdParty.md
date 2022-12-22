@@ -196,7 +196,8 @@ API Connect OpenAPI definition:
         }
     }
 }
-```
+```  
+
 </details>
 
 Some **notes**:  
