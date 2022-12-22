@@ -148,6 +148,7 @@ A "thirdpartyoidc" yaml is provided here after:
 
 <details>
 
+API Connect OpenAPI definition: 
 ```json
 {
     "type": "oauth_provider",
