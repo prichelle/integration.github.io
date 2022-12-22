@@ -423,8 +423,7 @@ The claims within the JWT token are:
 - sub: is the user that has been used to get the access token. The user that grants the access to the resource.
 - scope: all the scopes that are allowed for this specific user. In AppId the scopes are provided by the role assigned to the user. **execute** scope is listed in the possible scope for this access token.
 
-<details>
-<summary> Example of id token</summary>
+Example of id token
 
 ```json
 {
@@ -452,7 +451,6 @@ The claims within the JWT token are:
   ]
 }
 ```
-</details>
 
 **Note**: AppId doesn't support CORS. Which means that it is not possible to get an access token from the developer portal. The access token should be get directly from the OAuth provider (AppId).
 
