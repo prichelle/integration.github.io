@@ -498,8 +498,7 @@ The example provided here performs the following:
 If the JWT signature fails, an error is sent back to the gateway that will reject the access.
 
 The file is available in my [github OAuth section](https://github.com/prichelle/apic-v10-tutorials/blob/main/oauth/oauth-api-introspect-proxy.yaml) as well.
-<details>
-<summary>Introspect API</summary>
+
 
 ```yaml
 swagger: '2.0'
@@ -642,7 +641,6 @@ paths:
 
 ```
 
-</details>
 
 
 ## AppId configuration
