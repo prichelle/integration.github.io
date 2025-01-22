@@ -11,7 +11,7 @@ toc_sticky: true
 ---
 
 # Introduction 
-This post is intended to explained how connectors for EventStreams can be deployed.
+This post is intended to explain how connectors for EventStreams can be deployed.
 The EventStreams connectors are provided with KafkaConnect. the list of connectors that has been tested and that are supported can be found here:
 [EventStreams connectors](https://ibm.github.io/event-streams/connectors/)
 
@@ -26,7 +26,8 @@ This post explains how a KafkaConnector container can be build, deploy in IBM Cl
 - Maven
 - Docker or a container framework to build a container image. I am using [the pod manager tool - podman](https://podman.io/)
 - Container image registry. I am using the IBM Cloud registry.
-  - For the IBM Cloud registry you will need to use the [cloud cli](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli)
+- For the IBM Cloud registry you will need to use the [cloud cli](https://cloud.ibm.com/docs/cli?topic=cli-install-ibmcloud-cli)
+- The container-registry plugin for ibmcloud `ibmcloud plugin install container-registry`
 
 
 # KafkaConnect Setup
@@ -41,7 +42,7 @@ IBM EventStreams provides through its UI different tools to help building the co
 - Deploy and Start the connector.
 
 These different steps are shown in the following screenshot of the EventStreams UI:
-![EventStreams UI with connectors]()
+![EventStreams UI with connectors](/assets/images/posts/KafkaConnectSteps.png)
 
 ## Step 1 - Kafka Connect environment
 This section is about configuring the KafkaConnect framework.
@@ -262,10 +263,10 @@ spec:
     value.converter: org.apache.kafka.connect.storage.StringConverter
 ```
 
-Please note that you need to configure MQ to allow the connector to connect to IBM MQ. In this example, the queue manager has been configured to allow the connector to connect using a client conenction.
+Please note that you need to configure MQ to allow the connector to connect to IBM MQ. In this example, the queue manager has been configured to allow the connector to connect using a client connection.
 
 You can find detailed information about the 
-- hwo to setup and run connectors on the [EventStream Documentation](https://ibm.github.io/event-streams/connecting/setting-up-connectors/)
+- how to setup and run connectors on the [EventStream Documentation](https://ibm.github.io/event-streams/connecting/setting-up-connectors/)
 - the MQ Connector at the following [MQ git repo](https://github.com/ibm-messaging/kafka-connect-mq-source)
 
 # Commands
